@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Github Assignment</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="retry">Retry</string>
+    <string name="hint_seacrh">OwnerName/RepoName</string>
+    <string name="repo_name">Repository Name</string>
+    <string name="search">Search</string>
+    <string name="something_went_wrong">Something Went Wrong!</string>
+    <string name="arrow_symbol">➞</string>
+</resources>
