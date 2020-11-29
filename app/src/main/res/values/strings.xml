@@ -12,4 +12,5 @@
     <string name="add_comment">Add Comment</string>
     <string name="msg_add_comment">Please add comment to </string>
     <string name="comment">Comments</string>
+    <string name="no_comments">No Comments</string>
 </resources>

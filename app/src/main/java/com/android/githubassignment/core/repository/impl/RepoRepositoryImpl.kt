@@ -38,7 +38,7 @@ class RepoRepositoryImpl @Inject constructor(private val repoApi: RepoApi,
     }
 
     override fun getComments(id: String): Observable<List<String>> {
-        return Observable.just(commentData[id])
+        return Observable.just(commentData[id]?:ArrayList())
     }
 
 }

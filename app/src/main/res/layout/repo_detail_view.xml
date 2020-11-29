@@ -53,6 +53,7 @@
                     android:textColor="@color/colorAccent"
                     tools:text="1"
                     android:textStyle="bold"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:textSize="@dimen/_14sdp"
                     android:gravity="center"
                     app:layout_constraintVertical_chainStyle="spread"
@@ -85,8 +86,10 @@
                     android:padding="@dimen/_2sdp"
                     android:text="@{data.description}"
                     android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
                     app:layout_constraintStart_toStartOf="@id/tvRepoName"
                     app:layout_constraintTop_toBottomOf="@id/tvRepoName"
+                    app:layout_constraintBottom_toBottomOf="parent"
 
 
              />

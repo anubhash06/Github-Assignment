@@ -75,6 +75,7 @@ class RepoFragment : BaseFragment() {
 
     private fun showComment(displayData: RepoDisplayData?){
         displayData?.let {
+            viewModel.showCommentSuccess()
             LovelyTextInputDialog(activity)
                     .setTopColorRes(R.color.colorPrimary)
                     .setTitle(getString(R.string.add_comment))
@@ -90,6 +91,7 @@ class RepoFragment : BaseFragment() {
     private fun openDetailPage(displayData: RepoDisplayData?){
         displayData?.let {
            if(activity is RepositoryContract){
+               viewModel.showDetailSuccess()
                val repositoryContract = activity as RepositoryContract
                repositoryContract.openDetail(displayData)
            }
