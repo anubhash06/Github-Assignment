@@ -1,5 +1,6 @@
 package com.android.githubassignment.ui.home
 
+
 import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -12,10 +13,12 @@ import com.android.githubassignment.core.platform.BaseFragment
 import com.android.githubassignment.core.platform.ViewStatus
 import com.android.githubassignment.core.util.EndlessRecyclerOnScrollListener
 import com.android.githubassignment.ui.home.exception.NoRepositoryFoundFailure
+import com.android.githubassignment.ui.repodetail.RepositoryContract
+import com.yarolegovich.lovelydialog.LovelyTextInputDialog
 import kotlinx.android.synthetic.main.fragment_repo.*
 
 
-class RepoFragment : BaseFragment(), RepoAdapter.ItemClickListener {
+class RepoFragment : BaseFragment() {
 
 
     companion object {
@@ -36,10 +39,13 @@ class RepoFragment : BaseFragment(), RepoAdapter.ItemClickListener {
     private fun setViewModel() {
         viewModel = viewModel(viewModelFactory) {
             observe(repositories(), ::renderPullRequests)
+            observe(addComment(),::showComment)
+            observe(openDetail(),::openDetailPage)
             failure(getError(), ::observeError)
             failure(getError(), ::observeFeatureError)
         }
     }
+
 
     private fun observeFeatureError(viewStatus: ViewStatus?) {
         if (viewStatus is ViewStatus.FAIL) {
@@ -67,10 +73,32 @@ class RepoFragment : BaseFragment(), RepoAdapter.ItemClickListener {
     }
 
 
+    private fun showComment(displayData: RepoDisplayData?){
+        displayData?.let {
+            LovelyTextInputDialog(activity)
+                    .setTopColorRes(R.color.colorPrimary)
+                    .setTitle(getString(R.string.add_comment))
+                    .setMessage("${getString(R.string.msg_add_comment)} ${displayData.name} Repo")
+                    .setConfirmButton(R.string.add_comment) {
+                        viewModel.saveComment(displayData, it)
+                    }
+                    .show()
+        }
+    }
+
+
+    private fun openDetailPage(displayData: RepoDisplayData?){
+        displayData?.let {
+           if(activity is RepositoryContract){
+               val repositoryContract = activity as RepositoryContract
+               repositoryContract.openDetail(displayData)
+           }
+        }
+    }
+
 
     private fun setAdapter() {
-        adapter = RepoAdapter()
-        adapter.setOnClickListener(this)
+        adapter = RepoAdapter(viewModel)
         rvRepo.adapter = adapter
         rvRepo.addOnScrollListener(object : EndlessRecyclerOnScrollListener(rvRepo.layoutManager as LinearLayoutManager){
             override fun onLoadMore(pageNumber: Int) {
@@ -97,9 +125,6 @@ class RepoFragment : BaseFragment(), RepoAdapter.ItemClickListener {
 
 
     override fun layoutId(): Int = R.layout.fragment_repo
-    override fun onItemClickEvent(displayData: RepoDisplayData) {
-
-    }
 
 
 }

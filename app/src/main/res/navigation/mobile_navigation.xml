@@ -9,7 +9,11 @@
         android:id="@+id/navigation_home"
         android:name="com.android.githubassignment.ui.home.RepoFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_repo" />
+        tools:layout="@layout/fragment_repo" >
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_details"
+            app:destination="@id/navigation_details" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_dashboard"
@@ -22,4 +26,13 @@
         android:name="com.android.githubassignment.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/navigation_details"
+        android:name="com.android.githubassignment.ui.repodetail.RepoDetailFragment"
+        tools:layout="@layout/fragment_repo_details" >
+        <argument
+            android:name="displayData"
+            app:argType="com.android.githubassignment.ui.home.RepoDisplayData" />
+    </fragment>
 </navigation>
