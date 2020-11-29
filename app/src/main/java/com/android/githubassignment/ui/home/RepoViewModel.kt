@@ -91,6 +91,7 @@ class RepoViewModel @Inject constructor(private val repoUseCase: RepoUseCase,
     }
 
     fun showDetailSuccess(){
+        viewStatus.value = null
         openDetails.value = null
     }
 
