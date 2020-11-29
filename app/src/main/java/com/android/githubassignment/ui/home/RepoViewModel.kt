@@ -86,4 +86,12 @@ class RepoViewModel @Inject constructor(private val repoUseCase: RepoUseCase,
                 })
     }
 
+    fun showCommentSuccess() {
+        addComment.value = null
+    }
+
+    fun showDetailSuccess(){
+        openDetails.value = null
+    }
+
 }
