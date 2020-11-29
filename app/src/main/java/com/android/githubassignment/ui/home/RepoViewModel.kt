@@ -66,12 +66,12 @@ class RepoViewModel @Inject constructor(private val repoUseCase: RepoUseCase,
     fun saveComment(displayData: RepoDisplayData, comment: String) {
         viewStatus.postValue(ViewStatus.LOADING)
         saveCommentUseCase
-                .run(SaveCommentUseCase.Params(displayData.number.toString(),comment))
+                .run(SaveCommentUseCase.Params(displayData,comment))
                 .subscribeOn(appScheduler.io())
                 .observeOn(appScheduler.mainThread())
                 .subscribe(object : BaseObserver<Unit>(){
                     override fun onFailure(failure: Failure) {
-                        failure.retry = {fetchRepo()}
+                        failure.retry = {}
                         handleError(failure)
                     }
 

@@ -12,6 +12,7 @@ import com.android.githubassignment.core.extension.viewModel
 import com.android.githubassignment.core.platform.BaseFragment
 import com.android.githubassignment.core.platform.ViewStatus
 import com.android.githubassignment.core.util.EndlessRecyclerOnScrollListener
+import com.android.githubassignment.ui.home.exception.BlankCommentFailure
 import com.android.githubassignment.ui.home.exception.NoRepositoryFoundFailure
 import com.android.githubassignment.ui.repodetail.RepositoryContract
 import com.yarolegovich.lovelydialog.LovelyTextInputDialog
@@ -51,6 +52,7 @@ class RepoFragment : BaseFragment() {
         if (viewStatus is ViewStatus.FAIL) {
             when (viewStatus.failure) {
                 is NoRepositoryFoundFailure -> activityContract.showError(viewStatus.failure.message)
+                is BlankCommentFailure -> activityContract.showError(viewStatus.failure.message) {showComment(viewStatus.failure.displayData)}
             }
         }
     }
