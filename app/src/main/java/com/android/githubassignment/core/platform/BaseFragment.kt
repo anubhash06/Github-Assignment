@@ -44,7 +44,7 @@ abstract class BaseFragment : Fragment() {
     abstract fun layoutId(): Int
 
 
-    protected fun observeError(viewStatus: ViewStatus?) {
+    protected open fun observeError(viewStatus: ViewStatus?) {
         return when (viewStatus) {
             is ViewStatus.FAIL -> {
                 progressStatus(false)

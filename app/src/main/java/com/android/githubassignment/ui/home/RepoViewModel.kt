@@ -30,15 +30,15 @@ class RepoViewModel @Inject constructor(private val repoUseCase: RepoUseCase,
     fun addComment() : LiveData<RepoDisplayData> = addComment
     fun openDetail() : LiveData<RepoDisplayData> = openDetails
 
-    fun fetchRepo() {
+    fun fetchRepo(pageNumber : Int = 1) {
         viewStatus.postValue(ViewStatus.LOADING)
         repoUseCase
-            .run(Unit)
+            .run(RepoUseCase.Params(pageNumber))
             .subscribeOn(appScheduler.io())
             .observeOn(appScheduler.mainThread())
             .subscribe(object : BaseObserver<List<RepoDisplayData>>(){
                 override fun onFailure(failure: Failure) {
-                    failure.retry = {fetchRepo()}
+                    failure.retry = {fetchRepo(pageNumber)}
                     handleError(failure)
                 }
 
