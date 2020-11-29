@@ -9,17 +9,26 @@ import com.android.githubassignment.core.platform.BaseViewModel
 import com.android.githubassignment.core.platform.ViewStatus
 import com.android.githubassignment.core.scheduler.AppScheduler
 import com.android.githubassignment.interactor.RepoUseCase
+import com.android.githubassignment.interactor.SaveCommentUseCase
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class RepoViewModel @Inject constructor(private val repoUseCase: RepoUseCase,
+                                        private val saveCommentUseCase: SaveCommentUseCase,
                                         private val appScheduler: AppScheduler): BaseViewModel(){
 
     private val repositories = MutableLiveData<List<RepoDisplayData>>()
 
+    private val addComment = MutableLiveData<RepoDisplayData>()
+
+    private val openDetails = MutableLiveData<RepoDisplayData>()
+
     fun repositories(): LiveData<List<RepoDisplayData>> = repositories
+
+    fun addComment() : LiveData<RepoDisplayData> = addComment
+    fun openDetail() : LiveData<RepoDisplayData> = openDetails
 
     fun fetchRepo() {
         viewStatus.postValue(ViewStatus.LOADING)
@@ -46,5 +55,35 @@ class RepoViewModel @Inject constructor(private val repoUseCase: RepoUseCase,
 
     }
 
+    fun openComment(displayData: RepoDisplayData){
+        addComment.postValue(displayData)
+    }
+
+    fun openDetail(displayData: RepoDisplayData){
+        openDetails.postValue(displayData)
+    }
+
+    fun saveComment(displayData: RepoDisplayData, comment: String) {
+        viewStatus.postValue(ViewStatus.LOADING)
+        saveCommentUseCase
+                .run(SaveCommentUseCase.Params(displayData.number.toString(),comment))
+                .subscribeOn(appScheduler.io())
+                .observeOn(appScheduler.mainThread())
+                .subscribe(object : BaseObserver<Unit>(){
+                    override fun onFailure(failure: Failure) {
+                        failure.retry = {fetchRepo()}
+                        handleError(failure)
+                    }
+
+                    override fun onSubscribe(d: Disposable) {
+                        compositeDisposable.add(d)
+                    }
+
+                    override fun onNext(data : Unit) {
+                        viewStatus.postValue(ViewStatus.SUCCESS)
+                    }
+
+                })
+    }
 
 }
