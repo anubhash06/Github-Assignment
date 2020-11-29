@@ -5,5 +5,5 @@ import io.reactivex.Observable
 
 
 interface RepoRepository{
-    fun fetchRepo() : Observable<List<RepoDisplayData>>
+    fun fetchRepo(pageNumber : Int) : Observable<List<RepoDisplayData>>
 }

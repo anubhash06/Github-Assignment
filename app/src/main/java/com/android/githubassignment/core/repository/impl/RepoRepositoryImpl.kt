@@ -15,8 +15,8 @@ import javax.inject.Singleton
 class RepoRepositoryImpl @Inject constructor(private val repoApi: RepoApi,
                                              @Named("OAuthParams") private val OAuthParams : HashMap<String,String>)  : RepoRepository {
 
-    override fun fetchRepo(): Observable<List<RepoDisplayData>> {
-        return repoApi.repositories(OAuthParams = OAuthParams)
+    override fun fetchRepo(pageNumber: Int): Observable<List<RepoDisplayData>> {
+        return repoApi.repositories(pageNumber,OAuthParams = OAuthParams)
             .map { response -> run {
                 if(response.isEmpty()){
                    throw NoRepositoryFoundFailure("No Repo Found")
