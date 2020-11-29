@@ -63,7 +63,7 @@ abstract class BaseFragment : Fragment() {
             is ViewStatus.SUCCESS -> {
                 progressStatus(false)
             }
-            null -> activityContract.notify(R.string.something_went_wrong)
+            null -> {}
         }
     }
 
